@@ -90,33 +90,7 @@ class Program
         connection.Close();
         Console.WriteLine(" [*] Exit");
     }
-    // private static void CreateDurableSubscription()
-    // {
-    //     Connection connection = new Connection(new Address(DEFAULT_BROKER_URI),
-    //                                            SaslProfile.Anonymous,
-    //                                            new Open() { ContainerId = DEFAULT_CONTAINER_ID }, null);
 
-    //     try
-    //     {
-    //         Session session = new Session(connection);
-
-    //         Source source = CreateBasicSource();
-
-    //         // Create a Durable Consumer Source.
-    //         source.Address = DEFAULT_TOPIC_NAME;
-    //         source.ExpiryPolicy = new Symbol("never");
-    //         source.Durable = 2;
-    //         source.DistributionMode = new Symbol("copy");
-
-    //         ReceiverLink receiver = new ReceiverLink(session, DEFAULT_SUBSCRIPTION_NAME, source, null);
-
-    //         session.Close();
-    //     }
-    //     finally
-    //     {
-    //         connection.Close();
-    //     }
-    // }
     private static Source CreateBasicSource()
     {
         Source source = new Source();
