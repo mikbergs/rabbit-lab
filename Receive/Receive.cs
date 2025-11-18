@@ -10,31 +10,44 @@ class Program
 
     static async Task Main(string[] args)
     {
-        var address = new Address("amqp://guest:guest@localhost:5672");
-        var queueName = $"broadcast_sub_{Guid.NewGuid()}";
-
-        var connection = new Connection(address);
-        var session = new Session(connection);
+        var url = "amqp://guest:guest@localhost:5672";
+        var queueName = "/queue/accountapi";
+        var receiverLinkName = "receiver-link-2";
 
         var source = new Source
         {
-            Address = "/exchange/broadcast/account",
-            ExpiryPolicy = new Symbol("link-detach"),
-            Durable = 0,
-            DistributionMode = new Symbol("copy"),
-            FilterSet = new Map
-            {
-                {
-                    new Symbol("apache.org:legacy-amqp-direct-binding:string"),
-                    new DescribedValue(
-                        new Symbol("apache.org:legacy-amqp-direct-binding:string"),
-                        "account")
-                }
-            }
+            Address = queueName,
+            // ExpiryPolicy = new Symbol("link-detach"),
+            
+            Durable = 2
+            // DistributionMode = new Symbol("copy"),
         };
-        var receiver = new ReceiverLink(session, "receiver-link-2", source, null);
-        Console.WriteLine($" [*] Receiver 2 (queue: {queueName}) waiting for messages. To exit press CTRL+C");
 
+        var open = new Open
+        {
+            ContainerId = Guid.NewGuid().ToString()
+        };
+        var connection = await Connection.Factory.CreateAsync(new Address(url), open);
+        var session = new Session(connection);
+        // var receiver = new ReceiverLink(session, receiverLinkName, queueName);
+        var receiver = new ReceiverLink(session, receiverLinkName, source, null);
+
+
+
+        // var connection = new Connection(address);
+        // var session = new Session(connection);
+
+        // var source = new Source
+        // {
+        //     Address = "/queues/accountapi", // Broker implementation handles the implicit queue/binding here.
+        //     ExpiryPolicy = new Symbol("link-detach"),
+        //     Durable = 0,
+        //     DistributionMode = new Symbol("copy"),
+        // };
+        // var receiver = new ReceiverLink(session, "receiver-link-2", source, null);
+        // var receiver = new ReceiverLink(session, "receiver-link-2", queueName);
+        // Console.WriteLine($"-u:  {address.User}, -p: {address.Password}");
+        Console.WriteLine($"Waiting for messages on {queueName}");
         var cts = new CancellationTokenSource();
         Console.CancelKeyPress += (sender, e) =>
             {
