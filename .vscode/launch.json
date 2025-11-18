@@ -1,0 +1,56 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch send-091 with message",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/send-091/bin/Debug/net10.0/send-091.dll",
+            "args": [
+                "-m",
+                "Hello RabbitMQ"
+            ],
+            "cwd": "${workspaceFolder}/send-091",
+            "console": "integratedTerminal",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Launch send-091 with message and routing key",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/send-091/bin/Debug/net10.0/send-091.dll",
+            "args": [
+                "-m",
+                "Test message",
+                "-k",
+                "test"
+            ],
+            "cwd": "${workspaceFolder}/send-091",
+            "console": "integratedTerminal",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Launch receive-091 default routing",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/receive-091/bin/Debug/net10.0/receive-091.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/receive-091",
+            "console": "integratedTerminal",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Launch receive-091 with test routing key",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/receive-091/bin/Debug/net10.0/receive-091.dll",
+            "args": [
+                "-k",
+                "test"
+            ],
+            "cwd": "${workspaceFolder}/receive-091",
+            "console": "integratedTerminal",
+            "stopAtEntry": false
+        }
+    ]
+}
